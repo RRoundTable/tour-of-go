@@ -28,6 +28,22 @@ TCP packet that the client sends contains `sequence number`. The sequence number
 For example, the client sends packet with SYN upto 100 but got ACK 90 from the server. The client should retransmit packet with sequence number 91 ~ 100. It is called as `SACK`(Selective Acknowledgement)
 
 
+## Receive Buffer And Slide Window Size
+
+Because TCP use only one ACK packet to check more than one packets are received, the receiver should tell the sender how much receive buffer size can be available before the sender receives the ACK packet.
+Receive Buffer is memory space to use for receiving data for network. ACK packet contains window size. It means the bytes size that the sender can transmit without checking that the receiver receives packets.
+
+![]
+
+## Graceful Termination in TCP Session
+
+![]
+
+
+## Not Graceful Termination in TCP session
+
+RST packet
+
 ## Reference
 
 - https://en.wikipedia.org/wiki/Transmission_Control_Protocol
