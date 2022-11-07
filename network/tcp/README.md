@@ -21,9 +21,11 @@ Steps 1 and 2 establish and acknowledge the sequence number for one direction. S
 
 ## Check Packet Is Received Using Sequence Number
 
-TCP packet contains `sequence number`.
+TCP packet that the client sends contains `sequence number`. The sequence number `X + 1` of ACK packet means server receives packets up to `X` and expects to get `X + 1`. Similarly, the server send SYN packet `Y` to the client. And the client send ACK `Y + 1`packet to the server.
 
+![]
 
+For example, the client sends packet with SYN upto 100 but got ACK 90 from the server. The client should retransmit packet with sequence number 91 ~ 100. It is called as `SACK`(Selective Acknowledgement)
 
 
 ## Reference
