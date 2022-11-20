@@ -6,9 +6,9 @@ import (
 )
 
 func TestListener(t *testing.T) {
-    listener, err := net.Listen("tcp", "127.0.0.1:0")
+    listener, err := net.Listen("tcp", "127.0.0.1:20000")
     if err != nil {
-        t.Fetal(err)
+        t.Fatal(err)
     }
     defer func() { _ = listener.Close() }()
 
