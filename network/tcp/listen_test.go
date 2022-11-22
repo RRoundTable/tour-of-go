@@ -13,6 +13,18 @@ func TestListener(t *testing.T) {
     defer func() { _ = listener.Close() }()
 
     t.Logf("Bound to %q", listener.Addr())
+    for {
+        conn, err := listener.Accept()
+        t.Log(conn)
+        if err != nil {
+            t.Log(err)
+            return
+        }
+        go func(c net.Conn) {
+            defer c.Close()
+            t.Log("Connected")
+        }(conn)
+    }
 }
 
 
