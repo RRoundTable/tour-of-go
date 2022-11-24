@@ -14,22 +14,24 @@ func TestDial(t *testing.T){
     }
 
     done := make(chan struct{})
-    go func() {
+    go func () {
+        // Server side
         defer func() { done <- struct{}{} }()
 
         for {
+            t.Log("Waiting for connection")
             conn, err := listener.Accept()
             if err != nil {
                 t.Log(err)
                 return
             }
-
+            t.Log("Server side Connection Accepted", conn)
             go func(c net.Conn) {
                 defer func() {
+                    t.Log("Server close connection")
                     c.Close()
                     done <- struct{}{}
                 }()
-
                 buf := make([]byte, 1024)
                 for {
                     n, err := c.Read(buf)
@@ -44,13 +46,16 @@ func TestDial(t *testing.T){
             }(conn)
         }
     }()
-
+    // Client side
+    t.Log(listener.Addr())
+    t.Log("start dial")
     conn, err := net.Dial("tcp", listener.Addr().String())
+    t.Log("Client side connection", conn)
     if err != nil {
         t.Fatal(err)
     }
-
     conn.Close()
+    t.Log("Client close connection")
     <- done
     listener.Close()
     <- done
