@@ -1,24 +1,35 @@
 package main
 
 import (
-    "io/ioutil"
-    "log"
-    "net/http"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"time"
 )
 
-func main() {
+func httpClient() *http.Client {
+    client := &http.Client{Timeout: 10 * time.Second}
+    return client
+}
 
-    resp, err := http.Get("https://jsonplaceholder.typicode.com/posts/1")
+func send_request(client *http.Client) {
 
+    resp, err := http.NewRequest(http.MethodGet, "https://jsonplaceholder.typicode.com/posts/1", nil)
     if err != nil {
         log.Fatalln(err)
     }
 
-    body, err := ioutil.ReadAll(resp.Body)
+    response, err := client.Do(resp)
+    body, err := ioutil.ReadAll(response.Body)
     if err != nil {
         log.Fatalln(err)
     }
-    defer resp.Body.Close()
+    defer response.Body.Close()
     sb := string(body)
     log.Printf(sb)
+}
+
+func main() {
+    client := httpClient()
+    send_request(client)
 }
